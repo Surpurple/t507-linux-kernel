@@ -1,0 +1,24 @@
+#
+# Makefile fragment for Linux 2.6
+# Broadcom DHD Driver
+#
+# $ Copyright Open Broadcom Corporation $
+#
+#
+# <<Broadcom-WL-IPTag/Open:>>
+#
+# $Id: makefile.26,v 1.2.50.3 2011-02-07 23:29:49 $
+
+ifdef COMPAT_WIRELESS
+NOSTDINC_FLAGS := -I$(COMPAT_WIRELESS)/include/ \
+        -include $(COMPAT_WIRELESS)/include/linux/compat-2.6.h
+endif
+
+ifneq ($(findstring -android-,-$(TARGET)-),)
+  obj-m += cywdhd.o
+  cywdhd-objs = $(DHDOFILES)
+else
+  obj-m += dhd.o
+  dhd-objs = $(DHDOFILES)
+endif
+EXTRA_CFLAGS = $(DHDCFLAGS)

@@ -1,0 +1,12 @@
+#
+# $ Copyright Open Broadcom Corporation $
+#
+#
+# <<Broadcom-WL-IPTag/Open:>>
+#
+############
+# JellyBean
+############
+DHDCFLAGS += -DWL_ENABLE_P2P_IF
+DHDCFLAGS += -DMULTIPLE_SUPPLICANT
+DHDCFLAGS += -DWL_CFG80211_STA_EVENT
