@@ -64,6 +64,10 @@ static char *mac_str = GETH_MAC_ADDRESS;
 module_param(mac_str, charp, S_IRUGO | S_IWUSR);
 MODULE_PARM_DESC(mac_str, "MAC Address String.(xx:xx:xx:xx:xx:xx)");
 
+#define GETH1_MAC_ADDRESS "00:00:00:00:00:00"
+static char *mac_str1 = GETH1_MAC_ADDRESS;
+module_param(mac_str1, charp, S_IRUGO | S_IWUSR);
+MODULE_PARM_DESC(mac_str1, "MAC Address String.(xx:xx:xx:xx:xx:xx)");
 static int rxmode = 1;
 module_param(rxmode, int, S_IRUGO | S_IWUSR);
 MODULE_PARM_DESC(rxmode, "DMA threshold control value");
@@ -936,7 +940,7 @@ static void geth_check_addr(struct net_device *ndev, unsigned char *mac)
 			ndev->dev_addr[i] = simple_strtoul(p, &p, 16);
 
 		if (!is_valid_ether_addr(ndev->dev_addr))
-			geth_chip_hwaddr(ndev->dev_addr);
+			geth_chip_hwaddr(ndev->dev_addr);   
 
 		if (!is_valid_ether_addr(ndev->dev_addr)) {
 			random_ether_addr(ndev->dev_addr);
@@ -945,6 +949,32 @@ static void geth_check_addr(struct net_device *ndev, unsigned char *mac)
 	}
 }
 
+static void geth_check_addr1(struct net_device *ndev, unsigned char *mac)
+{
+	int i;
+	char *p = mac;
+
+	if (!is_valid_ether_addr(ndev->dev_addr)) 
+	{
+		for (i = 0; i < ETH_ALEN; i++, p++)
+		{
+			ndev->dev_addr[i] = simple_strtoul(p, &p, 16);
+			//printk("Use simple mac address");
+		}
+		// use random addr
+		if (!is_valid_ether_addr(ndev->dev_addr)) 
+		{
+			random_ether_addr(ndev->dev_addr);
+			pr_warn("%s: Use random mac address\n", ndev->name);
+		}
+
+		if (!is_valid_ether_addr(ndev->dev_addr))
+		{
+			geth_chip_hwaddr(ndev->dev_addr);
+			//printk("Use hwaddr mac address");
+		}
+	}
+}
 static void geth_clk_enable(struct geth_priv *priv)
 {
 	int phy_interface = 0;
@@ -1978,7 +2008,10 @@ static int geth_probe(struct platform_device *pdev)
 	}
 
 	/* Before open the device, the mac address should be set */
-	geth_check_addr(ndev, mac_str);
+	if(strcmp(ndev->name, "eth0") == 0)
+		geth_check_addr(ndev, mac_str);
+	else
+		geth_check_addr1(ndev, mac_str1);
 
 #ifdef CONFIG_GETH_ATTRS
 	geth_create_attrs(ndev);
@@ -2042,11 +2075,24 @@ static int __init set_mac_addr(char *str)
 	char *p = str;
 
 	if (str && strlen(str))
+	{
 		memcpy(mac_str, p, 18);
+	}
+	return 0;
+}
 
+static int __init set_mac_addr1(char *str)
+{
+	char *p = str;
+
+	if (str && strlen(str))
+	{
+		memcpy(mac_str1, p, 18);
+	}
 	return 0;
 }
 __setup("mac_addr=", set_mac_addr);
+__setup("mac_addr1=", set_mac_addr1);
 #endif
 
 MODULE_DESCRIPTION("Allwinner Gigabit Ethernet driver");

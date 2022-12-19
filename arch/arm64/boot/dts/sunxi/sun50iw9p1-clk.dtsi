@@ -261,8 +261,8 @@ clocks {
 			#clock-cells = <0>;
 			compatible = "allwinner,periph-clock";
 			assigned-clock-parents = <&clk_pll_periph0>;
-          	        assigned-clock-rates = <256000000>;
-                  	assigned-clocks = <&clk_psi>;
+          	assigned-clock-rates = <256000000>;
+            assigned-clocks = <&clk_psi>;
 			clock-output-names = "psi";
 		};
 		clk_ahb1: ahb1 {
@@ -289,7 +289,7 @@ clocks {
 		clk_apb2: apb2 {
 			#clock-cells = <0>;
 			compatible = "allwinner,periph-clock";
-                    	assigned-clock-parents = <&clk_psi>;
+                    assigned-clock-parents = <&clk_psi>;
           	        assigned-clock-rates = <64000000>;
                   	assigned-clocks = <&clk_apb2>;
 			clock-output-names = "apb2";
