@@ -727,7 +727,7 @@ vinc(x)_sensor_list: use sensor list
 				device_type = "sensor1";
 				sensor1_mname = "ov2659";
 				sensor1_twi_cci_id = <1>;
-				sensor1_twi_addr = <0x30>;
+				sensor1_twi_addr = <0x60>;
 				sensor1_mclk_id = <1>;
 				sensor1_pos = "front";
 				sensor1_isp_used = <0>;
@@ -748,9 +748,11 @@ vinc(x)_sensor_list: use sensor list
 */
 			sensor1:sensor@1 {
 				device_type = "sensor1";
-				sensor1_mname = "ov2659_dvp";
+				//sensor1_mname = "ov2659";
+				sensor1_mname = "ov5640_dvp";
 				sensor1_twi_cci_id = <1>;
-				sensor1_twi_addr = <0x30>;
+				//sensor1_twi_addr = <0x60>;
+				sensor1_twi_addr = <0x78>;
 				sensor1_mclk_id = <1>;
 				sensor1_pos = "front";
 				sensor1_isp_used = <0>;
@@ -758,8 +760,16 @@ vinc(x)_sensor_list: use sensor list
 				sensor1_stby_mode = <0>;
 				sensor1_vflip = <0>;
 				sensor1_hflip = <0>;
+				//sensor1_cameravdd-supply = <&reg_aldo5>;
+				//sensor1_cameravdd_vol = <3300000>;
 				sensor1_iovdd-supply = <&reg_aldo5>;
 				sensor1_iovdd_vol = <2800000>;
+				/*
+				sensor1_avdd-supply = <&reg_bldo4>;
+				sensor1_avdd_vol = <1200000>;
+				sensor1_dvdd-supply = <&reg_bldo5>;
+				sensor1_dvdd_vol = <1200000>;
+				*/
 				//sensor1_power_en = <&pio PD 22 1 1 1 0>;//3V3_io
 				sensor1_reset = <>;
 				sensor1_pwdn = <>;

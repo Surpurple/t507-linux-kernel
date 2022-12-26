@@ -261,6 +261,7 @@ enum media_entity_type {
 struct media_entity {
 	struct media_gobj graph_obj;	/* must be first field in struct */
 	const char *name;
+	u32 type;
 	enum media_entity_type obj_type;
 	u32 function;
 	unsigned long flags;
